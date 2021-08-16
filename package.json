@@ -1,0 +1,17 @@
+{
+  "name": "password-manager",
+  "version": "1.0.0",
+  "description": "Desktop application to organize and manage all your passwords",
+  "main": "main.js",
+  "scripts": {
+    "dev": "electron ."
+  },
+  "author": "Supratik Roy",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^13.1.7",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.1",
+    "uuid": "^8.3.2"
+  }
+}
