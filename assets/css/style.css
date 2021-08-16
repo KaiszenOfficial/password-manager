@@ -1,0 +1,56 @@
+/* @font-face {
+    font-family: 'Baloo Chettan 2';
+    src: url('../fonts/BalooChettan2-Regular.ttf');
+} */
+
+body {
+	margin: 0;
+	padding: 0;
+	height: 100vh;
+	background-color: #282c34;
+	color: #fff;
+}
+
+.list-group-item {
+    position: relative;
+    display: block;
+    padding: 0.5rem 1rem;
+    color: #ffffff;
+    text-decoration: none;
+    background-color: transparent;
+    border: 1px solid #ffffff;
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}
+
+.border-right {
+	border-right: 1px solid #ffffff;
+}
+
+.fonts-loaded {
+	font-family: 'Baloo Chettan 2', cursive !important;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+	background-color: transparent !important;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+	background-color: transparent !important;
+	color: inherit !important;
+}
+
+.form-control {
+	text-align: center;
+}
+
+.form-control:focus {
+    border-color: #ffffff !important;
+    box-shadow: 0 0 0 0.15rem #ffffff !important;
+}
+
+.btn-outline-light:hover > svg {
+	fill: #000000;
+}
