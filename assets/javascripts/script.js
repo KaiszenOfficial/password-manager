@@ -1,12 +1,12 @@
 // load saved passwords
-window.postMessage({ type: "LOAD_PASSWORDS" });
+window.onload = window.postMessage({ type: "LOAD_PASSWORDS" });
 
-let passwordLength = document.getElementById("passwordLength");
-let numbers = document.getElementById("numbers");
-let symbols = document.getElementById("symbols");
+let lengthEl  = document.getElementById("passwordLength");
+let numbersEl = document.getElementById("numbers");
+let symbolsEl = document.getElementById("symbols");
 
-let hasNumbers = numbers.value == "on" ? true : false;
-let hasSymbols = symbols.value == "on" ? true : false;
+let hasNumbers = numbersEl.value == "on" ? true : false;
+let hasSymbols = symbolsEl.value == "on" ? true : false;
 
 passwordLength.addEventListener("change", (e) => {
   document.getElementById(
@@ -22,70 +22,66 @@ symbols.addEventListener("change", (e) => {
   hasSymbols = e.target.checked;
 });
 
-document.getElementById("autoGenerateBtn").addEventListener("click", (e) => {
+/** Setup initial parameters for generating password
+ * Default will always be null on initialization
+ */
+let siteNameEl = document.getElementById("siteName");
+let siteUrlEl  = document.getElementById("siteURL");
+let usernameEl = document.getElementById("username");
+let passwordEl = document.getElementById("password");
+
+let autoGenBtn = document.getElementById("autoGenerateBtn");
+let saveBtn = document.getElementById("saveBtn");
+let resetBtn = document.getElementById("resetBtn");
+let closeBtn = document.getElementById("closeBtn");
+
+autoGenBtn.addEventListener("click", (e) => {
   //   e.preventDefault();
   const payload = {
     type: "AUTO_GEN_PASS",
-    length: passwordLength.value,
-    numbers: hasNumbers,
-    symbols: hasSymbols,
+    config: {
+      length: passwordLength.value,
+      numbers: hasNumbers,
+      symbols: hasSymbols,
+    },
   };
   window.postMessage(payload);
 });
 
-function validateFormFields(username, password, siteName) {
-  if (
-    username == null ||
-    username.trim().length == 0 ||
-    password == null ||
-    password.trim().length == 0 ||
-    siteName == null ||
-    siteName.trim().length == 0
-  ) {
-    return false;
-  }
-
-  return true;
-}
-
-document.getElementById("saveBtn").addEventListener("click", (e) => {
+saveBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
-  let username = document.getElementById("username").value;
-  let password = document.getElementById("password").value;
-  let siteName = document.getElementById("siteName").value;
-  let siteURL = document.getElementById("siteURL").value;
-
-  if (validateFormFields(username, password, siteName)) {
-    const payload = {
-      type: "SAVE_PASSWORD",
-      username,
-      password,
-      siteName,
-      siteURL,
+  const payload = {
+    type: "SAVE_PASSWORD",
+    username: usernameEl.value,
+    password: passwordEl.value,
+    siteName: siteNameEl.value,
+    siteURL: siteUrlEl.value,
+    config: {
       length: passwordLength.value,
       numbers: hasNumbers,
       symbols: hasSymbols,
-    };
+    },
+  };
 
-    window.postMessage(payload);
-  } else {
-    alert("Please check the form");
+  window.postMessage(payload);
+});
+
+resetBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  window.postMessage({ type: "RESET_FORM" })
+});
+
+passwordEl.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  if(passwordEl.value) {
+    // copy text to clipboard
   }
 });
 
-function resetForm() {
-  document.getElementById("username").value = null;
-  document.getElementById("password").value = null;
-  document.getElementById("siteName").value = null;
-  document.getElementById("siteURL").value = null;
-
-  document.getElementById("passwordLength").value = 8;
-  document.getElementById("numbers").value = "on";
-  document.getElementById("symbols").value = "on";
-}
-
-document.getElementById("resetBtn").addEventListener("click", (e) => {
+closeBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  resetForm();
-});
+
+  window.postMessage({ type: "CLOSE_APP" });
+})

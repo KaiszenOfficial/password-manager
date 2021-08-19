@@ -12,10 +12,11 @@ function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 900,
     height: 600,
+    frame: false,
+    resizable: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
-    resizable: false,
   });
 
   mainWindow.loadFile("views/index.html");
@@ -33,7 +34,7 @@ app.whenReady().then(() => {
  * {return} - password
  */
 ipcMain.on("generate:password", (event, args) => {
-  let { length, numbers, symbols } = args;
+  let { config: { length, numbers, symbols }} = args;
   let password = passwordManager.generate(length, numbers, symbols);
 
   event.returnValue = password;
@@ -44,26 +45,34 @@ ipcMain.on("generate:password", (event, args) => {
  * {return} - all saved passwords
  */
 ipcMain.on("load:passwords", (event, args) => {
-  let passwordString = fs.existsSync(path.join(__dirname, ".savedata/passwords.json")) ? fs.readFileSync(
-    path.join(__dirname, ".savedata/passwords.json"),
-    { encoding: "utf-8" }
-  ) : "";
-  event.returnValue = _.isEmpty(passwordString) ? [] : JSON.parse(passwordString);
+  let passwordString = fs.existsSync(
+    path.join(__dirname, ".savedata/passwords.json")
+  )
+    ? fs.readFileSync(path.join(__dirname, ".savedata/passwords.json"), {
+        encoding: "utf-8",
+      })
+    : "";
+  event.returnValue = _.isEmpty(passwordString)
+    ? []
+    : JSON.parse(passwordString);
 });
 
 /**
- * {args} - username, password, siteName, siteURL
+ * {args} - siteName, siteUrl, username, password
  * {return} - all saved passwords
  */
 ipcMain.on("save:password", (event, args) => {
-  let { username, password, siteName, siteURL } = args;
+  let { username, password, siteName, siteURL, config } = args;
 
   let passwords = [];
 
-  let passwordString = fs.existsSync(path.join(__dirname, ".savedata/passwords.json")) ? fs.readFileSync(
-    path.join(__dirname, ".savedata/passwords.json"),
-    { encoding: "utf-8" }
-  ): "";
+  let passwordString = fs.existsSync(
+    path.join(__dirname, ".savedata/passwords.json")
+  )
+    ? fs.readFileSync(path.join(__dirname, ".savedata/passwords.json"), {
+        encoding: "utf-8",
+      })
+    : "";
 
   passwords = _.isEmpty(passwordString) ? password : JSON.parse(passwordString);
 
@@ -79,6 +88,7 @@ ipcMain.on("save:password", (event, args) => {
       password,
       siteName,
       siteURL,
+      config,
       createdDate: moment().format("ll"),
       updatedDate: moment().format("ll"),
     };
@@ -91,22 +101,20 @@ ipcMain.on("save:password", (event, args) => {
       { encoding: "utf-8" }
     );
 
-    event.returnValue = {saved: true, new: true};
+    event.returnValue = { isSaved: true, isNew: false };
   } else {
-    // update existing password
-    // ipcMain.emit("override:password")
+
     let updatedPassword = {
       ...existingPassword,
       username,
       password,
       siteName,
       siteURL,
+      config,
       updatedDate: moment().format("ll"),
     };
 
-    passwords = passwords.filter(
-      (password) => password.siteName != siteName
-    );
+    passwords = passwords.filter((password) => password.siteName != siteName);
 
     passwords.push(updatedPassword);
 
@@ -116,8 +124,13 @@ ipcMain.on("save:password", (event, args) => {
       { encoding: "utf-8" }
     );
 
-    event.returnValue = {saved: true, new: false};
+    event.returnValue = { isSaved: true, isNew: false };
   }
+});
+
+ipcMain.on("app:quit", (event, args) => {
+  app.quit();
+  // BrowserWindow.getFocusedWindow().hide();
 });
 
 app.on("window-all-closed", function () {

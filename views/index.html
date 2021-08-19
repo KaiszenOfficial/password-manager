@@ -11,7 +11,12 @@
 	<title>Password Manager</title>
 </head>
 
-<body class="bg-dark">
+<body>
+	<header>
+		<div class="container-fluid py-2 d-flex justify-content-end">
+			<button class="close-btn" id="closeBtn"></button>
+		</div>
+	</header>
 	<div class="container-fluid px-3 py-3 h-100">
 
 		<div class="row h-100">
@@ -31,9 +36,9 @@
 			</div>
 			<div class="col-8 offset-1 px-5 d-flex align-items-center">
 				<div class="row">
-					<input type="text" class="form-control form-control-sm mb-3" id="siteName" placeholder="Site Name*">
-					<input type="text" class="form-control form-control-sm mb-3" id="siteURL" placeholder="Site URL">
-					<input type="text" class="form-control form-control-sm mb-3" id="username"
+					<input type="text" class="form-control mb-3" id="siteName" placeholder="Site Name*">
+					<input type="text" class="form-control mb-3" id="siteURL" placeholder="Site URL">
+					<input type="text" class="form-control mb-3" id="username"
 						placeholder="Username*" />
 
 					<div class="input-group p-0 mb-3">
@@ -73,33 +78,15 @@
 					</div>
 
 					<div class="d-grid gap-2 d-md-block text-center">
-						<button class="btn btn-sm btn-outline-light" type="button" id="saveBtn">
+						<button class="btn btn-outline-light" type="button" id="saveBtn">
 							Save
 						</button>
-						<button class="btn btn-sm btn-outline-light" type="button" id="resetBtn">
+						<button class="btn btn-outline-light" type="button" id="resetBtn">
 							Reset
 						</button>
 					</div>
 				</div>
 
-			</div>
-		</div>
-
-		<div class="modal fade" id="alert-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-body d-flex align-items-center">
-						<div class="row">
-							<div class="col-6 offset-3">
-								<h3 class="fw-bold" id="modal-text"></h3>
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary">Save changes</button>
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>
