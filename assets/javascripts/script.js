@@ -9,7 +9,9 @@ let hasNumbers = numbers.value == "on" ? true : false;
 let hasSymbols = symbols.value == "on" ? true : false;
 
 passwordLength.addEventListener("change", (e) => {
-  document.getElementById("lengthText").innerHTML = e.target.value;
+  document.getElementById(
+    "lengthText"
+  ).innerHTML = `Length (${e.target.value})`;
 });
 
 numbers.addEventListener("change", (e) => {
@@ -32,7 +34,14 @@ document.getElementById("autoGenerateBtn").addEventListener("click", (e) => {
 });
 
 function validateFormFields(username, password, siteName) {
-  if(username == null || username.trim().length == 0 || password == null || password.trim().length == 0 || siteName == null || siteName.trim().length == 0 ) {
+  if (
+    username == null ||
+    username.trim().length == 0 ||
+    password == null ||
+    password.trim().length == 0 ||
+    siteName == null ||
+    siteName.trim().length == 0
+  ) {
     return false;
   }
 
@@ -45,9 +54,9 @@ document.getElementById("saveBtn").addEventListener("click", (e) => {
   let username = document.getElementById("username").value;
   let password = document.getElementById("password").value;
   let siteName = document.getElementById("siteName").value;
-  let siteURL  = document.getElementById("siteURL").value;
+  let siteURL = document.getElementById("siteURL").value;
 
-  if(validateFormFields(username, password, siteName)) {
+  if (validateFormFields(username, password, siteName)) {
     const payload = {
       type: "SAVE_PASSWORD",
       username,
@@ -56,12 +65,12 @@ document.getElementById("saveBtn").addEventListener("click", (e) => {
       siteURL,
       length: passwordLength.value,
       numbers: hasNumbers,
-      symbols: hasSymbols
-    }
+      symbols: hasSymbols,
+    };
 
     window.postMessage(payload);
   } else {
-    alert("Please check the form")
+    alert("Please check the form");
   }
 });
 
@@ -77,11 +86,6 @@ function resetForm() {
 }
 
 document.getElementById("resetBtn").addEventListener("click", (e) => {
-  e.preventDefault();
-  resetForm();
-});
-
-document.getElementById("newBtn").addEventListener("click", (e) => {
   e.preventDefault();
   resetForm();
 });
