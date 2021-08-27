@@ -1,5 +1,5 @@
 ### Password Manager
-![password manager](./screenshot.png)
+![password manager](screenshot.png)
 
 **A simple desktop application to manage all your passwords from a single place.**
 
