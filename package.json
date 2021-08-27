@@ -1,17 +1,56 @@
 {
   "name": "password-manager",
-  "version": "1.0.0",
-  "description": "Desktop application to organize and manage all your passwords",
-  "main": "main.js",
-  "scripts": {
-    "dev": "electron ."
-  },
-  "author": "Supratik Roy",
-  "license": "MIT",
+  "version": "0.1.0",
+  "private": true,
+  "main": "public/main.js",
+  "homepage": "./",
   "dependencies": {
-    "electron": "^13.1.7",
-    "lodash": "^4.17.21",
-    "moment": "^2.29.1",
-    "uuid": "^8.3.2"
+    "@dicebear/avatars": "^4.7.4",
+    "@dicebear/avatars-initials-sprites": "^4.7.4",
+    "@electron/remote": "^1.2.1",
+    "@emotion/react": "^11.4.1",
+    "@emotion/styled": "^11.3.0",
+    "@material-ui/core": "^5.0.0-beta.5",
+    "@material-ui/icons": "^5.0.0-beta.5",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^12.8.3",
+    "concurrently": "^6.2.1",
+    "cross-env": "^7.0.3",
+    "dexie": "^3.2.0-beta.3",
+    "dexie-react-hooks": "^1.0.7",
+    "electron": "^13.2.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "wait-on": "^6.0.0",
+    "web-vitals": "^1.1.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "electron:serve": "concurrently -k \"cross-env BROWSER=none npm start\" \"npm run electron:start\"",
+    "electron:build": "",
+    "electron:start": "wait-on tcp:3000 && electron ."
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

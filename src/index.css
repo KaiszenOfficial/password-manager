@@ -1,0 +1,9 @@
+@font-face {
+  font-family:"Seaford";
+  src: url("./assets/fonts/SeafordRg.ttf") format("truetype");
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+}
