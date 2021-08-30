@@ -2,7 +2,7 @@ import { createAvatar } from '@dicebear/avatars';
 import * as style from '@dicebear/avatars-initials-sprites';
 import { alpha, numbers, symbols } from '../constants';
 
-export const formatPassword = (credential) => {
+export const formatCredential = (credential) => {
   const thumbnail = createAvatar(style, {
     seed: credential.title,
     height: 256,
@@ -10,8 +10,13 @@ export const formatPassword = (credential) => {
   });
 
   credential.thumbnail = thumbnail;
-  delete credential.id;
-  return credential;
+  if(credential.id) {
+    credential.updatedAt = new Date().getTime();
+    return credential
+  } else {
+    credential.createdAt = credential.updatedAt = new Date().getTime();
+    return credential;
+  }
 };
 
 export const generateRandomPassword = (config) => {

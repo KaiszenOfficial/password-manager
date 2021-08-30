@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { maxPasswordLength, minPasswordLength } from '../../constants';
-import { generateRandomPassword } from '../../utils';
+import { generateRandomPassword } from '../../utils/password.utils';
 
 function PasswordForm({ credential, onChangeCredential, onFormSubmit }) {
   const [showPassword, setShowPassword] = useState(false);
