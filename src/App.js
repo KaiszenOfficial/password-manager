@@ -39,7 +39,7 @@ const theme = createTheme({
     }
   },
   typography: {
-    fontFamily: ['Seaford', 'sans-serif'].join(',')
+    fontFamily: 'Source Sans Pro'
   }
 });
 
