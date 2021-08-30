@@ -1,10 +1,15 @@
-### Password Manager
-![password manager](screenshot.PNG)
+### Credentials Manager
+![credentials manager](screenshot.png)
 
-**A simple desktop application to manage all your passwords from a single place.**
+**A simple desktop application to manage all your credentials from a single place.**
 
-#### Tach Stack
-*For this project I went with **ReactJS** and **ElectronJS** as the two framworks. ReactJS is used for rendering the entire application as well as house the different logic for storing, retrieving and updating user credentials.*
+**:wrench: Technologies and Tools**
 
-#### Current version and future plans
-*Currently the feature set includes - adding new credentials, viewing stored credentials and editing stored credentials. To do task would be add a master passphrase which will be used to encode the stored passwords as well set a isProtected flag to desired passwords so that viewing them will require the use of the master passphrase.*
+![](https://img.shields.io/badge/Code-Electron-informational?style=flat&logo=electron&logoColor=white&color=2bbc8a) ![](https://img.shields.io/badge/Code-React-informational?style=flat&logo=react&logoColor=white&color=2bbc8a)
+
+**:spiral_notepad: Current status and future tasks**
+
+- Currently the app can add and edit credentials
+- Future plans include:
+	- Deleting existing credentials.
+	- Adding a passphrase which will control access to the entire application.

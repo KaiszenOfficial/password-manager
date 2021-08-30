@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import {
   AppBar,
   Container,
@@ -8,11 +8,11 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import Dexie from 'dexie'
-import { useLiveQuery } from "dexie-react-hooks";
 import logo from './logo.svg';
 import { PasswordList, PasswordForm } from './components';
-import { formatPassword } from './utils';
+import { loadSavedCredentials, saveCredential } from './renderer';
+import { STORAGE_ENUMS } from './constants';
+const { ipcRenderer } = window.require('electron');
 
 const initialState = {
   id: null,
@@ -28,6 +28,8 @@ const initialState = {
     numbers: true,
     symbols: true,
   },
+  createdAt: null,
+  updatedAt: null
 };
 
 const theme = createTheme({
@@ -37,32 +39,47 @@ const theme = createTheme({
     }
   },
   typography: {
-    fontFamily: ['Seaford', 'sans-serif'].join(',')
+    fontFamily: 'Source Sans Pro'
   }
 });
 
-const credentialsDB = new Dexie('Credentials');
-
-credentialsDB.version(1).stores(
-  { items: "++id,title,username,link,description,password,thumbnail,config" }
-);
 
 function App() {
+  const [storedCredentials, setStoredCredentials] = useState([]);
   const [credential, setCredential] = useState(initialState);
 
-  const storedCredentials = useLiveQuery(() => credentialsDB.items.reverse().sortBy('id'), []);
+  useEffect(() => {
+    loadSavedCredentials();
+  }, []);
+
+  useEffect(() => {
+    ipcRenderer.on(STORAGE_ENUMS.HANDLE_LOAD_SAVED_CREDENTIALS, handleLoadSavedCredentials);
+    
+    return () => {
+      ipcRenderer.removeListener(STORAGE_ENUMS.HANDLE_LOAD_SAVED_CREDENTIALS, handleLoadSavedCredentials);
+    }
+  });
+
+  const handleLoadSavedCredentials = (event, message) => {
+    setStoredCredentials(message.credentials);
+  }
 
   const handleFormSubmit = async () => {
-    console.log(formatPassword(credential));
-    if(credential.id) {
-      let id = credential.id;
-      delete credential.id;
-      await credentialsDB.items.update(id, credential);
-    } else {
-      await credentialsDB.items.add(formatPassword(credential));
-    }
-    setCredential(initialState);
+    saveCredential(credential);
   };
+
+  useEffect(() => {
+    ipcRenderer.on(STORAGE_ENUMS.HANDLE_SAVE_CREDENTIAL, handleSaveCredential);
+
+    return () => {
+      ipcRenderer.removeListener(STORAGE_ENUMS.HANDLE_SAVE_CREDENTIAL, handleSaveCredential);
+    }
+  });
+
+  const handleSaveCredential = (event, message) => {
+    setCredential(initialState);
+    loadSavedCredentials();
+  }
 
   const handleSelectCredential = (credential) => {
     setCredential(credential);
@@ -78,7 +95,7 @@ function App() {
           <Toolbar variant="dense">
             <img src={logo} alt="PasswordManager" height="60" width="60" />
             <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 'bold' }}>
-              Password Manager
+              Credentials Manager
             </Typography>
           </Toolbar>
         </AppBar>
