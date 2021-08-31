@@ -45,6 +45,18 @@ function PasswordForm({ credential, onChangeCredential, onFormSubmit }) {
     });
   };
 
+  const handleFormSubmission = (e) => {
+    e.preventDefault();
+    setShowPassword(false);
+    onFormSubmit('submit');
+  }
+
+  const handleFormReset = (e) => {
+    e.preventDefault();
+    setShowPassword(false);
+    onFormSubmit('reset');
+  }
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -121,7 +133,9 @@ function PasswordForm({ credential, onChangeCredential, onFormSubmit }) {
         <Stack spacing={2} direction="row" alignItems="center">
           <Typography variant="body1">Length</Typography>
           <Slider
-            aria-label="Volume"
+            aria-label="Length"
+            getAriaValueText={(value) => value}
+            valueLabelDisplay="auto"
             value={credential.config.length}
             min={minPasswordLength}
             max={maxPasswordLength}
@@ -161,8 +175,8 @@ function PasswordForm({ credential, onChangeCredential, onFormSubmit }) {
       </Grid>
       <Grid item xs={12}>
         <ButtonGroup variant="contained" fullWidth>
-          <Button onClick={onFormSubmit}>Save</Button>
-          <Button onClick={onFormSubmit}>Reset</Button>
+          <Button onClick={handleFormSubmission}>Save</Button>
+          <Button onClick={handleFormReset}>Reset</Button>
         </ButtonGroup>
       </Grid>
     </Grid>

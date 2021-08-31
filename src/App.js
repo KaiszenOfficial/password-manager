@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import logo from './logo.svg';
 import { PasswordList, PasswordForm } from './components';
-import { loadSavedCredentials, saveCredential } from './renderer';
+import { deleteCredential, loadSavedCredentials, saveCredential } from './renderer';
 import { STORAGE_ENUMS } from './constants';
 const { ipcRenderer } = window.require('electron');
 
@@ -64,8 +64,12 @@ function App() {
     setStoredCredentials(message.credentials);
   }
 
-  const handleFormSubmit = async () => {
-    saveCredential(credential);
+  const handleFormSubmit = type => {
+    if(type === 'submit') {
+      saveCredential(credential);
+    } else if (type === 'reset') {
+      setCredential(initialState)
+    }
   };
 
   useEffect(() => {
@@ -83,6 +87,22 @@ function App() {
 
   const handleSelectCredential = (credential) => {
     setCredential(credential);
+  }
+
+  const handleDeleteCredential = (credential) => {
+    deleteCredential(credential.id);
+  }
+
+  useEffect(() => {
+    ipcRenderer.on(STORAGE_ENUMS.HANDLE_DELETE_CREDENTIAL, handleOnDeleteCredential);
+
+    return () => {
+      ipcRenderer.removeListener(STORAGE_ENUMS.HANDLE_DELETE_CREDENTIAL, handleOnDeleteCredential);
+    }
+  });
+
+  const handleOnDeleteCredential = (event, message) => {
+    loadSavedCredentials();
   }
 
   return (
@@ -103,14 +123,14 @@ function App() {
           <Grid container spacing={3}>
             <Grid item xs={4}>
               {storedCredentials && (
-                <PasswordList storedCredentials={storedCredentials} onSelectCredential={handleSelectCredential} />
+                <PasswordList storedCredentials={storedCredentials} onSelectCredential={handleSelectCredential} onDeleteCredential={handleDeleteCredential} />
               )}
             </Grid>
             <Grid item xs={8}>
               <PasswordForm
                 credential={credential}
                 onChangeCredential={setCredential}
-                onFormSubmit={handleFormSubmit}
+                onFormSubmit={(type) => handleFormSubmit(type)}
               />
             </Grid>
           </Grid>
