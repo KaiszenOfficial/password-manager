@@ -11,3 +11,7 @@ export const saveCredential = (credential) => {
 	console.dir(formattedCredential);
 	ipcRenderer.send(STORAGE_ENUMS.SAVE_CREDENTIAL, formattedCredential);
 }
+
+export const deleteCredential = (id) => {
+	ipcRenderer.send(STORAGE_ENUMS.DELETE_CREDENTIAL, { id });
+}

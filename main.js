@@ -4,10 +4,12 @@ const _ = require('lodash');
 
 // storage enums. move to common constants later
 const STORAGE_ENUMS = {
-  LOAD_SAVED_CREDENTIALS: 'LOAD_SAVED_CREDENTIALS',
-  HANDLE_LOAD_SAVED_CREDENTIALS: 'HANDLE_LOAD_SAVED_CREDENTIALS',
-  SAVE_CREDENTIAL: 'SAVE_CREDENTIAL',
-  HANDLE_SAVE_CREDENTIAL: 'HANDLE_SAVE_CREDENTIAL',
+	LOAD_SAVED_CREDENTIALS: 'LOAD_SAVED_CREDENTIALS',
+	HANDLE_LOAD_SAVED_CREDENTIALS: 'HANDLE_LOAD_SAVED_CREDENTIALS',
+	SAVE_CREDENTIAL: 'SAVE_CREDENTIAL',
+	HANDLE_SAVE_CREDENTIAL: 'HANDLE_SAVE_CREDENTIAL',
+	DELETE_CREDENTIAL: 'DELETE_CREDENTIAL',
+	HANDLE_DELETE_CREDENTIAL: 'HANDLE_DELETE_CREDENTIAL'
 };
 
 let mainWindow = null;
@@ -57,8 +59,12 @@ app.on('activate', () => {
 });
 
 // ipcMain events
+/**
+ * @param {event} // IpcMainEvent
+ * @param {args} // null
+ */
 ipcMain.on(STORAGE_ENUMS.LOAD_SAVED_CREDENTIALS, (event, args) => {
-  console.log(`[${STORAGE_ENUMS.LOAD_SAVED_CREDENTIALS}] args`, args);
+  // console.log(`[${STORAGE_ENUMS.LOAD_SAVED_CREDENTIALS}] args`, args);
   storage.get('credentials', (error, credentials) => {
     if (error) {
       // return error message to app
@@ -67,23 +73,27 @@ ipcMain.on(STORAGE_ENUMS.LOAD_SAVED_CREDENTIALS, (event, args) => {
         credentials: [],
         error,
       };
-      console.log(`[${STORAGE_ENUMS.LOAD_SAVED_CREDENTIALS}] message`, message);
+      // console.log(`[${STORAGE_ENUMS.LOAD_SAVED_CREDENTIALS}] message`, message);
       mainWindow.send(STORAGE_ENUMS.HANDLE_LOAD_SAVED_CREDENTIALS, message);
     } else {
       let storedCredentials = [];
       if (!_.isEmpty(credentials)) {
-        storedCredentials = _.sortBy(credentials, ['updatedAt']);
+        storedCredentials = _.orderBy(credentials, ['updatedAt'], ['desc']);
       }
       const message = {
         success: true,
         credentials: storedCredentials,
       };
-      console.log(`[${STORAGE_ENUMS.LOAD_SAVED_CREDENTIALS}] message`, message);
+      // console.log(`[${STORAGE_ENUMS.LOAD_SAVED_CREDENTIALS}] message`, message);
       mainWindow.send(STORAGE_ENUMS.HANDLE_LOAD_SAVED_CREDENTIALS, message);
     }
   });
 });
 
+/**
+ * @param {event} // IpcMainEvent
+ * @param {args} // Credential parameters
+ */
 ipcMain.on(STORAGE_ENUMS.SAVE_CREDENTIAL, (event, args) => {
   console.log(`[${STORAGE_ENUMS.SAVE_CREDENTIAL}] args`, args);
   storage.get('credentials', (error, credentials) => {
@@ -94,7 +104,7 @@ ipcMain.on(STORAGE_ENUMS.SAVE_CREDENTIAL, (event, args) => {
         credentials: [],
         error,
       };
-      console.log(`[${STORAGE_ENUMS.SAVE_CREDENTIAL}] message`, message);
+      // console.log(`[${STORAGE_ENUMS.SAVE_CREDENTIAL}] message`, message);
       mainWindow.send(STORAGE_ENUMS.HANDLE_SAVE_CREDENTIAL, message);
     } else {
       let storedCredentials = _.isEmpty(credentials) ? [] : credentials;
@@ -107,15 +117,15 @@ ipcMain.on(STORAGE_ENUMS.SAVE_CREDENTIAL, (event, args) => {
         if(_.isEmpty(existingCred)) {
           let newCred = { ...args, id: storedCredentials.length + 1 };
           storedCredentials.push(newCred);
-          storedCredentials = _.sortBy(storedCredentials, ['updatedAt']);
+          storedCredentials = _.orderBy(storedCredentials, ['updatedAt'], ['desc']);
         } else {
           storedCredentials = _.filter(storedCredentials, (cred) => cred.id !== args.id);
           let updatedCred = { ...args };
           storedCredentials.push(updatedCred);
-          storedCredentials = _.sortBy(storedCredentials, ['updatedAt']);
+          storedCredentials = _.orderBy(storedCredentials, ['updatedAt'], ['desc']);
         }
       }
-      console.log('storedCredentials to set', storedCredentials);
+      // console.log('storedCredentials to set', storedCredentials);
       storage.set('credentials', storedCredentials, (error) => {
         if(error) {
           const message = {
@@ -136,3 +146,42 @@ ipcMain.on(STORAGE_ENUMS.SAVE_CREDENTIAL, (event, args) => {
     }
   });
 });
+
+/**
+ * @param {event} // IpcMainEvent
+ * @param {args} // credential id to delete
+ */
+ipcMain.on(STORAGE_ENUMS.DELETE_CREDENTIAL, (event, args) => {
+  console.log(`[${STORAGE_ENUMS.DELETE_CREDENTIAL}] args`, args);
+
+  storage.get('credentials', (error, credentials) => {
+    if(error) {
+      const message = {
+        success: false,
+        error
+      }
+      mainWindow.send(STORAGE_ENUMS.HANDLE_DELETE_CREDENTIAL, message);
+    } else {
+      let existingCredential = _.find(credentials, (credential) => credential.id === args.id);
+      if(!_.isEmpty(existingCredential)) {
+        let updatedCredentials = _.chain(credentials).filter((credential) => credential.id !== args.id).orderBy(['updatedAt'], ['desc']).value();
+        // console.log(`[${STORAGE_ENUMS.DELETE_CREDENTIAL}] updatedCredentials`, updatedCredentials)
+        storage.set('credentials', updatedCredentials, (error) => {
+          if(error) {
+            const message = {
+              success: false,
+              error
+            }
+            mainWindow.send(STORAGE_ENUMS.HANDLE_DELETE_CREDENTIAL, message);
+          } else {
+            const message = {
+              success: false,
+              credentials: updatedCredentials
+            }
+            mainWindow.send(STORAGE_ENUMS.HANDLE_DELETE_CREDENTIAL, message);
+          }
+        })
+      }
+    }
+  })
+})
