@@ -95,7 +95,7 @@ ipcMain.on(STORAGE_ENUMS.LOAD_SAVED_CREDENTIALS, (event, args) => {
  * @param {args} // Credential parameters
  */
 ipcMain.on(STORAGE_ENUMS.SAVE_CREDENTIAL, (event, args) => {
-  console.log(`[${STORAGE_ENUMS.SAVE_CREDENTIAL}] args`, args);
+  // console.log(`[${STORAGE_ENUMS.SAVE_CREDENTIAL}] args`, args);
   storage.get('credentials', (error, credentials) => {
     if (error) {
       // return error message to app
@@ -132,14 +132,14 @@ ipcMain.on(STORAGE_ENUMS.SAVE_CREDENTIAL, (event, args) => {
             success: true,
             credentials: storedCredentials,
           };
-          console.log(`[${STORAGE_ENUMS.SAVE_CREDENTIAL}] message`, message);
+          // console.log(`[${STORAGE_ENUMS.SAVE_CREDENTIAL}] message`, message);
           mainWindow.send(STORAGE_ENUMS.HANDLE_SAVE_CREDENTIAL, message);
         } else {
           const message = {
             success: true,
             credentials: storedCredentials,
           };
-          console.log(`[${STORAGE_ENUMS.SAVE_CREDENTIAL}] message`, message);
+          // console.log(`[${STORAGE_ENUMS.SAVE_CREDENTIAL}] message`, message);
           mainWindow.send(STORAGE_ENUMS.HANDLE_SAVE_CREDENTIAL, message);
         }
       })
@@ -152,7 +152,7 @@ ipcMain.on(STORAGE_ENUMS.SAVE_CREDENTIAL, (event, args) => {
  * @param {args} // credential id to delete
  */
 ipcMain.on(STORAGE_ENUMS.DELETE_CREDENTIAL, (event, args) => {
-  console.log(`[${STORAGE_ENUMS.DELETE_CREDENTIAL}] args`, args);
+  // console.log(`[${STORAGE_ENUMS.DELETE_CREDENTIAL}] args`, args);
 
   storage.get('credentials', (error, credentials) => {
     if(error) {
