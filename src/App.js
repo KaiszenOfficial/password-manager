@@ -7,6 +7,7 @@ import {
   ThemeProvider,
   Toolbar,
   Typography,
+  TextField,
 } from '@material-ui/core';
 import logo from './logo.svg';
 import { PasswordList, PasswordForm } from './components';
@@ -105,26 +106,31 @@ function App() {
     loadSavedCredentials();
   }
 
+  const handleSearchChange = (e) => {
+    console.log(e.target.value);
+  }
+
   return (
     <Fragment>
       <ThemeProvider theme={theme}>
         <AppBar
           position="static"
-          sx={{ backgroundColor: '#282c34', color: '#abb2bf' }}
+          sx={{ backgroundColor: 'transparent', color: '#282c34' }}
         >
           <Toolbar variant="dense">
             <img src={logo} alt="PasswordManager" height="60" width="60" />
             <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 'bold' }}>
-              Credentials Manager
+              CredPal
             </Typography>
           </Toolbar>
         </AppBar>
         <Container sx={{ paddingTop: '2rem' }}>
           <Grid container spacing={3}>
             <Grid item xs={4}>
-              {storedCredentials && (
-                <PasswordList storedCredentials={storedCredentials} onSelectCredential={handleSelectCredential} onDeleteCredential={handleDeleteCredential} />
-              )}
+              <TextField fullWidth size="small" label="Search" variant="outlined" onChange={handleSearchChange} sx={{ marginBottom: 3 }} />
+              {storedCredentials.length ? (
+                <PasswordList storedCredentials={storedCredentials} onSelectCredential={handleSelectCredential} onDeleteCredential={handleDeleteCredential} onChangeSearch={handleSearchChange} />
+              ) : <Typography variant="body1">No Entries</Typography>}
             </Grid>
             <Grid item xs={8}>
               <PasswordForm
