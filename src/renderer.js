@@ -15,3 +15,7 @@ export const saveCredential = (credential) => {
 export const deleteCredential = (id) => {
 	ipcRenderer.send(STORAGE_ENUMS.DELETE_CREDENTIAL, { id });
 }
+
+export const searchCredential = (query) => {
+	ipcRenderer.send(STORAGE_ENUMS.SEARCH_CREDENTIAL, query);
+}

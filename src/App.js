@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import logo from './logo.svg';
 import { PasswordList, PasswordForm } from './components';
-import { deleteCredential, loadSavedCredentials, saveCredential } from './renderer';
+import { deleteCredential, loadSavedCredentials, saveCredential, searchCredential } from './renderer';
 import { STORAGE_ENUMS } from './constants';
 const { ipcRenderer } = window.require('electron');
 
@@ -107,7 +107,19 @@ function App() {
   }
 
   const handleSearchChange = (e) => {
-    console.log(e.target.value);
+    searchCredential(e.target.value);
+  }
+
+  useEffect(() => {
+    ipcRenderer.on(STORAGE_ENUMS.HANDLE_SEARCH_CREDENTIAL, handleSearchCredential);
+
+    return () => {
+      ipcRenderer.removeListener(STORAGE_ENUMS.HANDLE_SEARCH_CREDENTIAL, handleSearchCredential);
+    }
+  });
+
+  const handleSearchCredential = (event, message) => {
+    setStoredCredentials(message.credentials);
   }
 
   return (

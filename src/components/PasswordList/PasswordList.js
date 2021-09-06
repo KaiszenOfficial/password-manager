@@ -8,7 +8,6 @@ import {
   ListItemText,
   Menu,
   MenuItem,
-  TextField,
 } from '@material-ui/core';
 import { Delete, Edit, MoreVert } from '@material-ui/icons';
 
