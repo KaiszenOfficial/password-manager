@@ -9,7 +9,9 @@ const STORAGE_ENUMS = {
 	SAVE_CREDENTIAL: 'SAVE_CREDENTIAL',
 	HANDLE_SAVE_CREDENTIAL: 'HANDLE_SAVE_CREDENTIAL',
 	DELETE_CREDENTIAL: 'DELETE_CREDENTIAL',
-	HANDLE_DELETE_CREDENTIAL: 'HANDLE_DELETE_CREDENTIAL'
+	HANDLE_DELETE_CREDENTIAL: 'HANDLE_DELETE_CREDENTIAL',
+  SEARCH_CREDENTIAL: 'SEARCH_CREDENTIAL',
+	HANDLE_SEARCH_CREDENTIAL: 'HANDLE_SEARCH_CREDENTIAL'
 };
 
 let mainWindow = null;
@@ -17,7 +19,7 @@ let mainWindow = null;
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 1000,
+    width: 1200,
     height: 800,
     resizable: false,
     // autoHideMenuBar: true,
@@ -182,6 +184,27 @@ ipcMain.on(STORAGE_ENUMS.DELETE_CREDENTIAL, (event, args) => {
           }
         })
       }
+    }
+  })
+});
+
+
+ipcMain.on(STORAGE_ENUMS.SEARCH_CREDENTIAL, (event, args) => {
+
+  storage.get('credentials', (error, credentials) => {
+    if(error) {
+      const message = {
+        success: false,
+        error
+      }
+      mainWindow.send(STORAGE_ENUMS.HANDLE_SEARCH_CREDENTIAL, message);
+    } else {
+      let searchedCredentials = _.filter(credentials, (credential) => credential.title.toLowerCase().includes(args.toLowerCase()));
+      const message = {
+        success: true,
+        credentials: searchedCredentials
+      }
+      mainWindow.send(STORAGE_ENUMS.HANDLE_SEARCH_CREDENTIAL, message);
     }
   })
 })

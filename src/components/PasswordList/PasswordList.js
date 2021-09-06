@@ -53,7 +53,7 @@ function PasswordList({ storedCredentials, onSelectCredential, onDeleteCredentia
           <ListItemAvatar>
             <Avatar src={unescapeThumbnail(cred.thumbnail)} alt={cred.title} />
           </ListItemAvatar>
-          <ListItemText primary={cred.title} secondary={cred.description} />
+          <ListItemText primary={cred.title} secondary={cred.description} primaryTypographyProps={{ fontWeight: 'bold' }} />
           <MoreVert sx={{ cursor: 'pointer' }} onClick={handleOpenMenu(index)} />
           <Menu
             id="basic-menu"
