@@ -8,6 +8,7 @@ import {
   Toolbar,
   Typography,
   TextField,
+  CssBaseline,
 } from '@material-ui/core';
 import logo from './logo.svg';
 import { PasswordList, PasswordForm } from './components';
@@ -35,12 +36,13 @@ const initialState = {
 
 const theme = createTheme({
   palette: {
+    mode: 'dark',
     primary: {
-      main: '#282c34',
+      main: '#61afef'
     }
   },
   typography: {
-    fontFamily: 'Source Sans Pro'
+    fontFamily: 'Montserrat'
   }
 });
 
@@ -125,9 +127,9 @@ function App() {
   return (
     <Fragment>
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <AppBar
           position="static"
-          sx={{ backgroundColor: 'transparent', color: '#282c34' }}
         >
           <Toolbar variant="dense">
             <img src={logo} alt="PasswordManager" height="60" width="60" />

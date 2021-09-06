@@ -60,7 +60,7 @@ function PasswordForm({ credential, onChangeCredential, onFormSubmit }) {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Details</Typography>
+        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Basic Details</Typography>
       </Grid>
       <Grid item xs={12}>
         <TextField
@@ -127,7 +127,7 @@ function PasswordForm({ credential, onChangeCredential, onFormSubmit }) {
         />
       </Grid>
       <Grid item xs={12}>
-        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Configuration</Typography>
+        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Password Configuration</Typography>
       </Grid>
       <Grid item xs={12}>
         <Stack spacing={2} direction="row" alignItems="center">
@@ -169,14 +169,14 @@ function PasswordForm({ credential, onChangeCredential, onFormSubmit }) {
           fullWidth
           onClick={handleGenerateRandomPassword}
         >
-          Generate Random Password
+          <Typography sx={{ fontWeight: 'bold' }}>Generate Random Password</Typography>
         </Button>
-        <Typography sx={{ fontSize: '0.8rem', color: 'rgba(0,0,0,0.7)' }}>*This button will generate a random password based on the above configurations you have specified</Typography>
+        <Typography sx={{ fontSize: '0.8rem' }}>*This button will generate a random password based on the above configurations you have specified</Typography>
       </Grid>
       <Grid item xs={12}>
         <ButtonGroup variant="contained" fullWidth>
-          <Button onClick={handleFormSubmission}>Save</Button>
-          <Button onClick={handleFormReset}>Reset</Button>
+          <Button onClick={handleFormSubmission}><Typography sx={{ fontWeight: 'bold' }}>Save</Typography></Button>
+          <Button onClick={handleFormReset}><Typography sx={{ fontWeight: 'bold' }}>Reset</Typography></Button>
         </ButtonGroup>
       </Grid>
     </Grid>
