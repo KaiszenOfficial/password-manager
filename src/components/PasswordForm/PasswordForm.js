@@ -117,6 +117,7 @@ function PasswordForm({ credential, onChangeCredential, onFormSubmit }) {
                   onClick={(e) => setShowPassword(!showPassword)}
                   // onMouseDown={handleMouseDownPassword}
                   edge="end"
+                  color="secondary"
                 >
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
@@ -139,6 +140,7 @@ function PasswordForm({ credential, onChangeCredential, onFormSubmit }) {
             value={credential.config.length}
             min={minPasswordLength}
             max={maxPasswordLength}
+            color="secondary"
             onChange={handleConfigChange('length')}
           />
         </Stack>
@@ -149,6 +151,7 @@ function PasswordForm({ credential, onChangeCredential, onFormSubmit }) {
             <Checkbox
               checked={credential.config.numbers}
               onChange={handleConfigChange('numbers')}
+              color="secondary"
             />
           }
           label="Include numbers"
@@ -158,22 +161,26 @@ function PasswordForm({ credential, onChangeCredential, onFormSubmit }) {
             <Checkbox
               checked={credential.config.symbols}
               onChange={handleConfigChange('symbols')}
+              color="secondary"
             />
           }
           label="Include symbols"
         />
       </Grid>
-      <Grid item xs={12} sx={{ mb: 3 }}>
+      <Grid item xs={6} sx={{ mb: 3 }}>
         <Button
           variant="contained"
           fullWidth
           onClick={handleGenerateRandomPassword}
+          color="secondary"
         >
           <Typography sx={{ fontWeight: 'bold' }}>Generate Random Password</Typography>
         </Button>
+      </Grid>
+      <Grid item xs={6} sx={{ mb: 3 }}>
         <Typography sx={{ fontSize: '0.8rem' }}>*This button will generate a random password based on the above configurations you have specified</Typography>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={6} sx={{ ml: 'auto', mr: 'auto' }}>
         <ButtonGroup variant="contained" fullWidth>
           <Button onClick={handleFormSubmission}><Typography sx={{ fontWeight: 'bold' }}>Save</Typography></Button>
           <Button onClick={handleFormReset}><Typography sx={{ fontWeight: 'bold' }}>Reset</Typography></Button>

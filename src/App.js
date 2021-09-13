@@ -38,7 +38,10 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#61afef'
+      main: '#00416a'
+    },
+    secondary: {
+      main: '#50C878'
     }
   },
   typography: {
@@ -130,9 +133,10 @@ function App() {
         <CssBaseline />
         <AppBar
           position="static"
+          sx={{ backgroundColor: '#00416a' }}
         >
           <Toolbar variant="dense">
-            <img src={logo} alt="PasswordManager" height="60" width="60" />
+            <img src={logo} alt="CredPal" height="60" width="60" />
             <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 'bold' }}>
               CredPal
             </Typography>
