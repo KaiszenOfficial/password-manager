@@ -60,7 +60,7 @@ function PasswordForm({ credential, onChangeCredential, onFormSubmit }) {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Details</Typography>
+        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Basic Details</Typography>
       </Grid>
       <Grid item xs={12}>
         <TextField
@@ -117,6 +117,7 @@ function PasswordForm({ credential, onChangeCredential, onFormSubmit }) {
                   onClick={(e) => setShowPassword(!showPassword)}
                   // onMouseDown={handleMouseDownPassword}
                   edge="end"
+                  color="secondary"
                 >
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
@@ -127,7 +128,7 @@ function PasswordForm({ credential, onChangeCredential, onFormSubmit }) {
         />
       </Grid>
       <Grid item xs={12}>
-        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Configuration</Typography>
+        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Password Configuration</Typography>
       </Grid>
       <Grid item xs={12}>
         <Stack spacing={2} direction="row" alignItems="center">
@@ -139,6 +140,7 @@ function PasswordForm({ credential, onChangeCredential, onFormSubmit }) {
             value={credential.config.length}
             min={minPasswordLength}
             max={maxPasswordLength}
+            color="secondary"
             onChange={handleConfigChange('length')}
           />
         </Stack>
@@ -149,6 +151,7 @@ function PasswordForm({ credential, onChangeCredential, onFormSubmit }) {
             <Checkbox
               checked={credential.config.numbers}
               onChange={handleConfigChange('numbers')}
+              color="secondary"
             />
           }
           label="Include numbers"
@@ -158,25 +161,29 @@ function PasswordForm({ credential, onChangeCredential, onFormSubmit }) {
             <Checkbox
               checked={credential.config.symbols}
               onChange={handleConfigChange('symbols')}
+              color="secondary"
             />
           }
           label="Include symbols"
         />
       </Grid>
-      <Grid item xs={12} sx={{ mb: 3 }}>
+      <Grid item xs={6} sx={{ mb: 3 }}>
         <Button
           variant="contained"
           fullWidth
           onClick={handleGenerateRandomPassword}
+          color="secondary"
         >
-          Generate Random Password
+          <Typography sx={{ fontWeight: 'bold' }}>Generate Random Password</Typography>
         </Button>
-        <Typography sx={{ fontSize: '0.8rem', color: 'rgba(0,0,0,0.7)' }}>*This button will generate a random password based on the above configurations you have specified</Typography>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={6} sx={{ mb: 3 }}>
+        <Typography sx={{ fontSize: '0.8rem' }}>*This button will generate a random password based on the above configurations you have specified</Typography>
+      </Grid>
+      <Grid item xs={6} sx={{ ml: 'auto', mr: 'auto' }}>
         <ButtonGroup variant="contained" fullWidth>
-          <Button onClick={handleFormSubmission}>Save</Button>
-          <Button onClick={handleFormReset}>Reset</Button>
+          <Button onClick={handleFormSubmission}><Typography sx={{ fontWeight: 'bold' }}>Save</Typography></Button>
+          <Button onClick={handleFormReset}><Typography sx={{ fontWeight: 'bold' }}>Reset</Typography></Button>
         </ButtonGroup>
       </Grid>
     </Grid>
