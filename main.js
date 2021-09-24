@@ -188,7 +188,10 @@ ipcMain.on(STORAGE_ENUMS.DELETE_CREDENTIAL, (event, args) => {
   })
 });
 
-
+/**
+ * @param {event} // IpcMainEvent
+ * @param {args} // title of credential to perform search with
+ */
 ipcMain.on(STORAGE_ENUMS.SEARCH_CREDENTIAL, (event, args) => {
 
   storage.get('credentials', (error, credentials) => {

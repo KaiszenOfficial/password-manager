@@ -98,6 +98,8 @@ function PasswordForm({ credential, onChangeCredential, onFormSubmit }) {
           size="small"
           required
           label="Description"
+          multiline
+          rows={4}
           value={credential.description}
           onChange={handleOnChange('description')}
         />
