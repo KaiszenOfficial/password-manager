@@ -38,10 +38,13 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#00416a'
+      main: 'hsl(175, 100%, 31%)'
     },
     secondary: {
-      main: '#50C878'
+      main: 'hsl(40, 89%, 65%)'
+    },
+    background: {
+      default: 'hsl(218, 14.7%, 18.7%)'
     }
   },
   typography: {
@@ -133,7 +136,7 @@ function App() {
         <CssBaseline />
         <AppBar
           position="static"
-          sx={{ backgroundColor: '#00416a' }}
+          sx={{ backgroundColor: 'hsl(175, 100%, 31%)' }}
         >
           <Toolbar variant="dense">
             <img src={logo} alt="CredPal" height="60" width="60" />
